@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">1</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="table">ТАБЛИЦА</string>
+    <string name="tables">ТАБЛИЦЫ</string>
+    <string name="news">НОВОСТИ</string>
+    <string name="statistic">СТАТИСТИКА</string>
+    <string name="options">НАСТРОЙКИ</string>
+    <string name="russia">РОССИЯ</string>
+    <string name="england">АНГЛИЯ</string>
+    <string name="germany">ГЕРМАНИЯ</string>
+    <string name="spain">ИСПАНИЯ</string>
+    <string name="number">№</string>
+    <string name="command">Команда</string>
+    <string name="i">И</string>
+    <string name="v">В</string>
+    <string name="n">Н</string>
+    <string name="p">П</string>
+    <string name="balls">Мячи</string>
+    <string name="o">О</string>
+    <string name="defence">ОБОРОНА</string>
+    <string name="attack">АТАКА</string>
+    <string name="notification">УВЕДОМЛЕНИЯ</string>
+    <string name="black_theme">ЧЕРНАЯ ТЕМА</string>
+    <string name="wall_paper">ОБОИ</string>
+    <string name="change">change</string>
+    <string name="tournament">Турнир</string>
+    <string name="z_i_kicks">Удары \nЗ.И</string>
+    <string name="selection">Отборы</string>
+    <string name="kick_vstv">Удары ВСтв</string>
+</resources>

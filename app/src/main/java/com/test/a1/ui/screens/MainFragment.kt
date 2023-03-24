@@ -1,6 +1,8 @@
 package com.test.a1.ui.screens
 
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -38,6 +42,17 @@ class MainFragment : Fragment() {
     private val component by lazy {
         (requireActivity().application as App).component
     }
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                Log.i("Permission: ", "Granted")
+            } else {
+                Log.i("Permission: ", "Denied")
+            }
+        }
+
 
     override fun onAttach(context: Context) {
         component.inject(this)
@@ -55,6 +70,10 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cancelPush()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermission(view,android.Manifest.permission.POST_NOTIFICATIONS)
+        }
+
         viewModel = ViewModelProvider(this, viewModelFactory)[NewsVewModel::class.java]
         initBackground(binding.imBackground,viewModel.wallpaper)
         with(binding){
@@ -85,11 +104,50 @@ class MainFragment : Fragment() {
         imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(),wallpaper))
     }
 
-    fun cancelPush(){
+    private fun cancelPush(){
         if(args.push == SplashFragment.Companion.NO)
             OneSignal.disablePush(true)
         else
             OneSignal.disablePush(false)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        permissions.forEach {
+            Log.d("PERMISSION",it)
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+
+    private fun requestPermission(view: View, permission: String){
+
+        when {
+            ContextCompat.checkSelfPermission(
+                requireActivity(),
+                permission
+            ) == PackageManager.PERMISSION_GRANTED -> {
+
+            }
+
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                requireActivity(),
+                permission
+            ) -> {
+                requestPermissionLauncher.launch(
+                    permission
+                )
+            }
+
+            else -> {
+                requestPermissionLauncher.launch(
+                    permission
+                )
+            }
+        }
     }
 
 }

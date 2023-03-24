@@ -11,6 +11,8 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.onesignal.OneSignal
 import com.test.a1.App
 import com.test.a1.R
 import com.test.a1.databinding.FragmentMainBinding
@@ -25,6 +27,8 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding: FragmentMainBinding
         get() = _binding ?: throw RuntimeException("FragmentMainBinding == null")
+
+    private val args: MainFragmentArgs by navArgs()
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -50,6 +54,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        cancelPush()
         viewModel = ViewModelProvider(this, viewModelFactory)[NewsVewModel::class.java]
         initBackground(binding.imBackground,viewModel.wallpaper)
         with(binding){
@@ -78,6 +83,13 @@ class MainFragment : Fragment() {
 
     private fun initBackground(imageView: ImageView, wallpaper: Int){
         imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(),wallpaper))
+    }
+
+    fun cancelPush(){
+        if(args.push == SplashFragment.Companion.NO)
+            OneSignal.disablePush(true)
+        else
+            OneSignal.disablePush(false)
     }
 
 }

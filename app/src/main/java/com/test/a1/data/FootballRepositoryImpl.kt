@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class FootballRepositoryImpl @Inject constructor(
     val network: NetworkApi,
-    val splashApi: SplashApi
+    val splashApi: SplashApi,
 ) : FootballRepository {
     override fun getTournamentInfo(): Single<List<LeagueInfo>> {
         return network.getTournamentInfo().map { list ->

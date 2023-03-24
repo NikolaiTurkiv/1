@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.test.a1.domain.FootballUseCase
-import com.test.a1.domain.OptionsUseCase
+import com.test.a1.domain.SharedUseCase
 import com.test.a1.ui.entities.AttackDefence
 import com.test.a1.ui.entities.AttackTitle
 import com.test.a1.ui.entities.DefenceTitle
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class AttackDefenceViewModel @Inject constructor(
     private val footballUseCase: FootballUseCase,
-    private val optionsUseCase: OptionsUseCase
+    private val optionsUseCase: SharedUseCase
 ) : ViewModel() {
 
     val wallpaper = optionsUseCase.backgroundWallpaper

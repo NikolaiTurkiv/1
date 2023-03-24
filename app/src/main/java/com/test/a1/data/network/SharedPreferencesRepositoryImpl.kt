@@ -11,6 +11,7 @@ class SharedPreferencesRepositoryImpl @Inject constructor(context: Context) :
     companion object {
         private const val DAGGER_SHARED_PREF = "DAGGER_SHARED_PREF"
         private const val DARK_THEME = "DARK_THEME"
+        private const val ID = "ID"
         private const val WALLPAPER = "WALLPAPER"
     }
 
@@ -27,6 +28,8 @@ class SharedPreferencesRepositoryImpl @Inject constructor(context: Context) :
         set(value) {
             sharedPreferences.edit().putInt(WALLPAPER,value).apply()
         }
+    override val currentId: String
+        get() = sharedPreferences.getString(ID,"") ?: ""
 
     override fun saveBackground(wallpaper: Int) {
         sharedPreferences.edit().putInt(WALLPAPER,wallpaper).apply()
@@ -34,5 +37,9 @@ class SharedPreferencesRepositoryImpl @Inject constructor(context: Context) :
 
     override fun saveTheme(isDark: Boolean) {
         sharedPreferences.edit().putBoolean(DARK_THEME,isDark).apply()
+    }
+
+    override fun saveID(id: String) {
+        sharedPreferences.edit().putString(ID,id).apply()
     }
 }

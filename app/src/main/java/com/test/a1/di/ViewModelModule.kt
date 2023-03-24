@@ -1,10 +1,7 @@
 package com.test.a1.di
 
 import androidx.lifecycle.ViewModel
-import com.test.a1.ui.viewmodels.AttackDefenceViewModel
-import com.test.a1.ui.viewmodels.NewsVewModel
-import com.test.a1.ui.viewmodels.OptionsViewModel
-import com.test.a1.ui.viewmodels.TournamentViewModel
+import com.test.a1.ui.viewmodels.*
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -30,4 +27,10 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(OptionsViewModel::class)
     fun bindOptionsViewModel(viewModel: OptionsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SplashViewModel::class)
+    fun bindSplashViewModel(viewModel: SplashViewModel): ViewModel
+
 }

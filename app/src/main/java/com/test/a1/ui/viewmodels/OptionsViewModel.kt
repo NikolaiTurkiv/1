@@ -3,11 +3,11 @@ package com.test.a1.ui.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.test.a1.R
-import com.test.a1.domain.OptionsUseCase
+import com.test.a1.domain.SharedUseCase
 import javax.inject.Inject
 
 class OptionsViewModel @Inject constructor(
-    private val optionsUseCase: OptionsUseCase
+    private val optionsUseCase: SharedUseCase
 ) : ViewModel() {
 
     val wallpaper = optionsUseCase.backgroundWallpaper

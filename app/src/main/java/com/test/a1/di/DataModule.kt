@@ -6,6 +6,7 @@ import com.test.a1.data.FootballRepositoryImpl
 import com.test.a1.data.network.NetworkApi
 import com.test.a1.data.network.NetworkFactory
 import com.test.a1.data.network.SharedPreferencesRepositoryImpl
+import com.test.a1.data.network.response.SplashApi
 import com.test.a1.domain.FootballRepository
 import com.test.a1.domain.SharedPreferencesRepository
 import dagger.Binds
@@ -32,5 +33,9 @@ interface DataModule {
         @Provides
         @Singleton
         fun provideNetworkApi(): NetworkApi = NetworkFactory.apiService
+
+        @Provides
+        @Singleton
+        fun provideSplashApi(): SplashApi = NetworkFactory.splashService
     }
 }

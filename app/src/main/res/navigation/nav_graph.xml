@@ -10,6 +10,10 @@
         android:name="com.test.a1.ui.screens.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
+        <argument
+            android:name="push"
+            app:argType="string"
+            android:defaultValue=""/>
         <action
             android:id="@+id/action_mainFragment_to_tablesFragment"
             app:destination="@id/tablesFragment" />
@@ -22,7 +26,8 @@
         <action
             android:id="@+id/action_mainFragment_to_optionFragment"
             app:destination="@id/optionFragment" />
-    </fragment>
+
+     </fragment>
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.test.a1.ui.screens.SplashFragment"
@@ -33,6 +38,11 @@
             app:destination="@id/mainFragment"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/newsFragment"
@@ -70,5 +80,18 @@
         <action
             android:id="@+id/action_tablesFragment_to_tableDetailFragment"
             app:destination="@id/tableDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.test.a1.ui.screens.WebViewFragment"
+        android:label="fragment_web_view"
+        tools:layout="@layout/fragment_web_view" >
+         <argument
+            android:name="site"
+            app:argType="string"
+            android:defaultValue=""/>
+        <action
+            android:id="@+id/action_webViewFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
 </navigation>

@@ -1,15 +1,21 @@
 package com.test.a1.ui.screens
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.test.a1.App
 import com.test.a1.R
+import com.test.a1.ui.ViewModelFactory
+ import com.test.a1.ui.viewmodels.SplashViewModel
+ import java.util.*
+import javax.inject.Inject
 
 
 class SplashFragment : Fragment() {
@@ -20,33 +26,87 @@ class SplashFragment : Fragment() {
         (requireActivity().application as App).component
     }
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private lateinit var viewModel: SplashViewModel
+
     override fun onAttach(context: Context) {
         component.inject(this)
         super.onAttach(context)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-          return inflater.inflate(R.layout.fragment_splash, container, false)
+        return inflater.inflate(R.layout.fragment_splash, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, viewModelFactory)[SplashViewModel::class.java]
 
-        countDownTimer = object : CountDownTimer(3000,1000){
+        val id = viewModel.id
+        val locale = resources.configuration.locale
+        val deviceName = getDeviceName()
+
+        if (id.isEmpty()) {
+            val uniqueID = UUID.randomUUID().toString()
+            viewModel.saveId(uniqueID)
+            viewModel.fetchPhoneStatus(deviceName.toString(), locale.toString(), uniqueID)
+        } else {
+            viewModel.fetchPhoneStatus(deviceName.toString(), locale.toString(), viewModel.id)
+        }
+
+        countDownTimer = object : CountDownTimer(3000, 1000) {
             override fun onTick(p0: Long) {
 
             }
 
             override fun onFinish() {
-                 findNavController().navigate(R.id.action_splashFragment_to_mainFragment)
-             }
+
+                viewModel.response.observe(viewLifecycleOwner) { response ->
+                    when (response.url) {
+                        NO -> {
+                            val action =
+                                SplashFragmentDirections.actionSplashFragmentToMainFragment()
+                                    .setPush(
+                                        NO
+                                    )
+                            findNavController().navigate(action)
+                        }
+                        NO_PUSH -> {
+                            val action =
+                                SplashFragmentDirections.actionSplashFragmentToMainFragment()
+                                    .setPush(NO_PUSH)
+                            findNavController().navigate(action)
+                        }
+                        else -> {
+                            val action =
+                                SplashFragmentDirections.actionSplashFragmentToWebViewFragment()
+                                    .setSite(response.url)
+                            findNavController().navigate(action)
+                        }
+                    }
+                }
+            }
 
         }.start()
 
     }
 
+    private fun getDeviceName(): String? {
+        val manufacturer = Build.MANUFACTURER
+        val model = Build.MODEL
+        return "$manufacturer $model"
+
+    }
+
+    companion object {
+        const val NO = "no"
+        const val NO_PUSH = "nopush"
+    }
 
     override fun onDestroy() {
         super.onDestroy()
